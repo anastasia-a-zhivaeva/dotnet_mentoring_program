@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HelloWorldLibrary;
 
 namespace HelloWorldWinForms
 {
@@ -26,12 +27,13 @@ namespace HelloWorldWinForms
             {
                 foreach (var name in greetingNames)
                 {
-                    greetings.Text += $"Hello, {name}!\n";
+                    greetings.Text += Greeting.Greet(name);
+                    greetings.Text += "\n";
                 }
             }
             else
             {
-                greetings.Text = "Hello, stranger!";
+                greetings.Text = Greeting.Greet();
             }
         }
     }

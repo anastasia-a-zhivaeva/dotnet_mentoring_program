@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HelloWorldLibrary;
 
 namespace HelloWorldWPF
 {
@@ -34,12 +35,13 @@ namespace HelloWorldWPF
             {
                 foreach (var name in greetingNames)
                 {
-                    Greetings.Content += $"Hello, {name}!\n";
+                    Greetings.Content += Greeting.Greet(name);
+                    Greetings.Content += "\n";
                 }
             }
             else
             {
-                Greetings.Content = "Hello, stranger!";
+                Greetings.Content = Greeting.Greet();
             }
 
         }
