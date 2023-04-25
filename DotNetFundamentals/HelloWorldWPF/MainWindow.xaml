@@ -1,0 +1,16 @@
+﻿<Window x:Name="GreetingWindow" x:Class="HelloWorldWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HelloWorldWPF"
+        mc:Ignorable="d"
+        Title="Greeting" Height="344" Width="595">
+    <Grid>
+        <Button x:Name="Submit" Content="Submit" HorizontalAlignment="Left" Margin="342,95,0,0" VerticalAlignment="Top" Click="Submit_Click" Height="29" Width="76"/>
+        <TextBox x:Name="Names" HorizontalAlignment="Center" Margin="0,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="242" Height="28"/>
+        <Label x:Name="NamesLabel" Content="Enter names (comma separated)" HorizontalAlignment="Left" Margin="176,31,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Greetings" Content="" HorizontalAlignment="Center" Margin="0,178,0,0" VerticalAlignment="Top" Height="90" Width="242"/>
+
+    </Grid>
+</Window>
