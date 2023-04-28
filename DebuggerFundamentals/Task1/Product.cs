@@ -11,5 +11,10 @@
         public string Name { get; set; }
 
         public double Price { get; set; }
+
+        public bool Equals(Product other)
+        {
+            return other != null && Name == other.Name && Price == other.Price;
+        }
     }
 }
