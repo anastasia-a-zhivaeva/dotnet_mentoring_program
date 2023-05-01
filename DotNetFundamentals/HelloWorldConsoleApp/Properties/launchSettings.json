@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "HelloWorldConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "Anastasiia\r\nIurii"
+    }
+  }
+}

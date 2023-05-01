@@ -1,2 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using HelloWorldLibrary;
+
+var greeting = new Greeting();
+Console.WriteLine(greeting.Greet(args));
+Console.ReadKey();
