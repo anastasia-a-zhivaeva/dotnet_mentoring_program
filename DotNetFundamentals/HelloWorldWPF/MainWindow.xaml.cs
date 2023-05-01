@@ -21,6 +21,8 @@ namespace HelloWorldWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Greeting greeting = new Greeting();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,22 +30,7 @@ namespace HelloWorldWPF
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            var greetingNames = Names.Text.Split(',').Where(s => s.Length > 0).ToArray();
-            Greetings.Content = String.Empty;
-
-            if (greetingNames.Length > 0)
-            {
-                foreach (var name in greetingNames)
-                {
-                    Greetings.Content += Greeting.Greet(name);
-                    Greetings.Content += "\n";
-                }
-            }
-            else
-            {
-                Greetings.Content = Greeting.Greet();
-            }
-
+            Greetings.Content = greeting.Greet(greeting.ParseNames(Names.Text));
         }
     }
 }

@@ -4,6 +4,7 @@ namespace HelloWorldMAIU
 {
     public partial class MainPage : ContentPage
     {
+        private Greeting greeting = new Greeting();
 
         public MainPage()
         {
@@ -12,20 +13,7 @@ namespace HelloWorldMAIU
 
         private void OnCounterClicked(object sender, EventArgs e)
         {
-            var greetingNames = Names.Text?.Split(',').Where(s => s.Length > 0).ToArray() ?? Array.Empty<string>();
-            Greetings.Text = String.Empty;
-
-            if (greetingNames.Length > 0)
-            {
-                foreach (var name in greetingNames) {
-                    Greetings.Text += Greeting.Greet(name);
-                    Greetings.Text += "\n";
-                }
-            }
-            else
-            {
-                Greetings.Text = Greeting.Greet();
-            }
+            Greetings.Text = greeting.Greet(greeting.ParseNames(Names.Text));
             SemanticScreenReader.Announce(Greetings.Text);
         }
     }
