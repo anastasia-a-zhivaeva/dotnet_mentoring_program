@@ -31,36 +31,44 @@ internal class Program
 
             try
             {
-                DisplayFilesAndDirectories(folderPath, fileSystemFilter.GetFileSystemInfoFilter());
+                DisplayFilesAndDirectories(folderPath, fileSystemFilter.Filter, fileSystemFilter.AbortOption, fileSystemFilter.ExcludeOption);
+            }
+            catch (Exception e) when (e is DirectoryNotFoundException || e is ArgumentNullException)
+            {
+                Console.WriteLine(e.Message);
             }
             catch (Exception e)
             {
-                if (e is DirectoryNotFoundException)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                else
-                {
-                    Console.WriteLine(e.Message);
-                    break;
-                }
+                Console.WriteLine(e.Message);
+                break;
             }
         } while (true);
     }
 
     private static string? ReadFolderPathOrCommand()
     {
+        Console.WriteLine();
         Console.WriteLine("Type a folder path or '{0}' or '{1}':", exit, clean);
         return Console.ReadLine();
     }
 
-    private static void DisplayFilesAndDirectories(string folderPath, FileSystemInfoFilter? filter)
+    private static void DisplayFilesAndDirectories(string folderPath, FileSystemInfoFilter? filter, bool abort, bool exclude)
     {
-        var fileSystemVisitor = new FileSystemVisitor(folderPath, filter);
+        Console.WriteLine();
+        var fileSystemVisitor = new FileSystemVisitor(folderPath, filter, abort, exclude);
+        fileSystemVisitor.FileSystemEnumerationStarted += (sender, e) => Console.WriteLine("Enumeration of {0} is started by {1}", e.RootFolder, sender);
+        fileSystemVisitor.FileSystemEnumerationFinished += (sender, e) => Console.WriteLine("Enumeration of {0} is finished by {1}", e.RootFolder, sender);
+        fileSystemVisitor.FileSystemEnumerationAborted += (sender, e) => Console.WriteLine("Enumeration of {0} is aborted by {1}", e.RootFolder, sender);
+        fileSystemVisitor.FileSystemFileFound += (sender, e) => Console.WriteLine("File found - {0} by {1}", e.Path, sender);
+        fileSystemVisitor.FileSystemDirectoryFound += (sender, e) => Console.WriteLine("Directory found - {0} by {1}", e.Path, sender);
+        fileSystemVisitor.FileSystemFilteredFileFound += (sender, e) => Console.WriteLine("Filtered file found - {0} by {1}", e.Path, sender);
+        fileSystemVisitor.FileSystemFilteredDirectoryFound += (sender, e) => Console.WriteLine("Filtered directory found - {0} by {1}", e.Path, sender);
         var fileSystem = fileSystemVisitor.EnumerateFileSystem();
         foreach (var info in fileSystem)
         {
-            Console.WriteLine("{0} - {1}", info.GetFileSystemInfoType(), info.FullName);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("{0} Result - {1}", info.GetFileSystemInfoType(), info.FullName);
+            Console.ResetColor();
         }
     }
 }

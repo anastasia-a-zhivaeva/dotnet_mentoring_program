@@ -8,9 +8,23 @@
         CONTAINS,
     }
 
+    public enum FileSystemFilterAbortOption
+    {
+        NO = 1,
+        YES,
+    }
+
+    public enum FileSystemFilterExcludeOption
+    {
+        YES = 1,
+        NO,
+    }
+
     public class FileSystemFilter
     {
         private FileSystemFilterOption _option = FileSystemFilterOption.NO_FILTER;
+        private FileSystemFilterAbortOption _abort = FileSystemFilterAbortOption.NO;
+        private FileSystemFilterExcludeOption _exclude = FileSystemFilterExcludeOption.YES;
 
         private Dictionary<FileSystemFilterOption, FileSystemInfoFilter?> _filters = new Dictionary<FileSystemFilterOption, FileSystemInfoFilter?>()
         {
@@ -22,9 +36,21 @@
         private Dictionary<FileSystemFilterOption, string> _filterDisplayNames = new Dictionary<FileSystemFilterOption, string>()
         {
             { FileSystemFilterOption.NO_FILTER, "No filter (default)" },
-            { FileSystemFilterOption.IS_FILE, "Display files only" },
-            { FileSystemFilterOption.IS_DIRECTORY, "Display directories only" },
-            { FileSystemFilterOption.CONTAINS, "Display files and directories with name containing a string" }
+            { FileSystemFilterOption.IS_FILE, "Filter files" },
+            { FileSystemFilterOption.IS_DIRECTORY, "Filter directories" },
+            { FileSystemFilterOption.CONTAINS, "Filter files and directories with name containing a string" }
+        };
+
+        private Dictionary<FileSystemFilterAbortOption, bool> _abortOptions = new Dictionary<FileSystemFilterAbortOption, bool>()
+        {
+            { FileSystemFilterAbortOption.NO, false },
+            { FileSystemFilterAbortOption.YES, true },
+        };
+
+        private Dictionary<FileSystemFilterExcludeOption, bool> _excludeOptions = new Dictionary<FileSystemFilterExcludeOption, bool>()
+        {
+            { FileSystemFilterExcludeOption.NO, false },
+            { FileSystemFilterExcludeOption.YES, true },
         };
 
         public void ReadFilterChoice()
@@ -46,11 +72,27 @@
 
             if (_option == FileSystemFilterOption.CONTAINS)
                 SetContainsFilterValue();
+
+            if (_option != FileSystemFilterOption.NO_FILTER)
+            {
+                SetAbortChoiceValue();
+                SetExcludeChoiceValue();
+            }
         }
 
-        public FileSystemInfoFilter? GetFileSystemInfoFilter()
+        public FileSystemInfoFilter? Filter
         {
-            return _filters.GetValueOrDefault(_option);
+            get => _filters.GetValueOrDefault(_option);
+        }
+
+        public bool AbortOption
+        {
+            get => _abortOptions.GetValueOrDefault(_abort);
+        }
+
+        public bool ExcludeOption
+        {
+            get => _excludeOptions.GetValueOrDefault(_exclude);
         }
 
         private void SetContainsFilterValue()
@@ -67,6 +109,46 @@
             else
             {
                 _filters.Add(FileSystemFilterOption.CONTAINS, containsFilter);
+            }
+        }
+
+        private void SetAbortChoiceValue()
+        {
+            Console.WriteLine(
+                """
+                Would you like to abort enumeration when first filtered file/directory found?
+                1. No (default)
+                2. Yes
+                """
+            );
+
+            try
+            {
+                _abort = (FileSystemFilterAbortOption)int.Parse(Console.ReadLine() ?? "1");
+            }
+            catch
+            {
+                _abort = FileSystemFilterAbortOption.NO;
+            }
+        }
+
+        private void SetExcludeChoiceValue()
+        {
+            Console.WriteLine(
+                """
+                Would you like to exclude found filtered file/directory from the final result?
+                1. Yes (default)
+                2. No
+                """
+            );
+
+            try
+            {
+                _exclude = (FileSystemFilterExcludeOption)int.Parse(Console.ReadLine() ?? "1");
+            }
+            catch
+            {
+                _exclude = FileSystemFilterExcludeOption.YES;
             }
         }
     }
