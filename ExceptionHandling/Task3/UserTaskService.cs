@@ -15,17 +15,17 @@ namespace Task3
         public int AddTaskForUser(int userId, UserTask task)
         {
             if (userId < 0)
-                return -1;
+                throw new ArgumentException("Invalid userId");
 
             var user = _userDao.GetUser(userId);
             if (user == null)
-                return -2;
+                throw new EntityNotFoundException("User not found");
 
             var tasks = user.Tasks;
             foreach (var t in tasks)
             {
                 if (string.Equals(task.Description, t.Description, StringComparison.OrdinalIgnoreCase))
-                    return -3;
+                    throw new EntityAlreadyExistsException("The task already exists");
             }
 
             tasks.Add(task);
