@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Text;
+using ConfigurationProviderBaseLibrary;
 
 namespace ConfigurationAttribute
 {
@@ -10,7 +10,7 @@ namespace ConfigurationAttribute
 
         public string? GetSetting(string settingName)
         {
-            string setting;
+            string? setting;
             using (var fs = File.Open(_settingsFile, FileMode.OpenOrCreate, FileAccess.Read))
             {
                 using (var sr = new StreamReader(fs))
@@ -28,9 +28,9 @@ namespace ConfigurationAttribute
             return null;
         }
 
-        public void SetSetting(string settingName, string value)
+        public void SetSetting(string settingName, string? value)
         {
-            string setting;
+            string? setting;
             string settings = "";
             bool rewrite = false;
             using (var fs = File.Open(_settingsFile, FileMode.OpenOrCreate, FileAccess.Read))

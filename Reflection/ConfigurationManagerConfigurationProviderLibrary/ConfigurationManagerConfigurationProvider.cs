@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
+using ConfigurationProviderBaseLibrary;
 
 namespace ConfigurationAttribute
 {
-    public class ConfigurationManagerConfigurationProvider:  IConfigurationProvider
+    public class ConfigurationManagerConfigurationProvider: IConfigurationProvider
     {
         public string? GetSetting(string settingName)
         {
@@ -10,7 +11,7 @@ namespace ConfigurationAttribute
             return appSettings[settingName];
         }
 
-        public void SetSetting(string settingName, string value)
+        public void SetSetting(string settingName, string? value)
         {
             var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var settings = configFile.AppSettings.Settings;

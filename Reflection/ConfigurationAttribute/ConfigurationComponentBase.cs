@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ConfigurationProviderBaseLibrary;
 
 namespace ConfigurationAttribute
 {
@@ -8,13 +9,18 @@ namespace ConfigurationAttribute
         {
             foreach (PropertyInfo propertyInfo in GetType().GetProperties())
             {
-                ConfigurationItemAttribute configurationItemAttribute = propertyInfo.GetCustomAttribute<ConfigurationItemAttribute>();
+                ConfigurationItemAttribute? configurationItemAttribute = propertyInfo.GetCustomAttribute<ConfigurationItemAttribute>();
                 if (configurationItemAttribute != null)
                 {
-                    Type providerType = configurationItemAttribute.ProviderType;
+                    ConfigurationProviderType providerType = configurationItemAttribute.ProviderType;
                     string settingName = configurationItemAttribute.SettingName;
 
-                    var provider = (IConfigurationProvider)Activator.CreateInstance(providerType);
+                    IConfigurationProvider? provider = ConfigurationProviderLoader.providers.GetValueOrDefault(providerType);
+                    if (provider == null) 
+                    {
+                        throw new DllNotFoundException($"Provider with type {providerType.ToDescriptionString()} not found in {ConfigurationProviderLoader.ProvidersDirectory} directory");
+                    }
+
                     provider.SetSetting(settingName, propertyInfo.GetValue(this)?.ToString());
                 }
             }
@@ -24,15 +30,19 @@ namespace ConfigurationAttribute
         {
             foreach (PropertyInfo propertyInfo in GetType().GetProperties())
             {
-                ConfigurationItemAttribute configurationItemAttribute = propertyInfo.GetCustomAttribute<ConfigurationItemAttribute>();
+                ConfigurationItemAttribute? configurationItemAttribute = propertyInfo.GetCustomAttribute<ConfigurationItemAttribute>();
                 if (configurationItemAttribute != null)
                 {
-                    Type providerType = configurationItemAttribute.ProviderType;
+                    ConfigurationProviderType providerType = configurationItemAttribute.ProviderType;
                     string settingName = configurationItemAttribute.SettingName;
 
-                    var provider = (IConfigurationProvider)Activator.CreateInstance(providerType);
+                    IConfigurationProvider? provider = ConfigurationProviderLoader.providers.GetValueOrDefault(providerType);
+                    if (provider == null)
+                    {
+                        throw new DllNotFoundException($"Provider with type {providerType.ToDescriptionString()} not found in {ConfigurationProviderLoader.ProvidersDirectory} directory");
+                    }
 
-                    var value = provider.GetSetting(settingName);
+                    string? value = provider.GetSetting(settingName);
                     if (value == null)
                     {
                         propertyInfo.SetValue(this, null, null);
@@ -48,6 +58,8 @@ namespace ConfigurationAttribute
                             propertyInfo.SetValue(this, TimeSpan.Parse(value), null);
                         }
                     }
+
+
                 }
             }
         }

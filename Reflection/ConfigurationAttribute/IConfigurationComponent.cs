@@ -1,5 +1,4 @@
-﻿using System;
-namespace ConfigurationAttribute
+﻿namespace ConfigurationAttribute
 {
     public interface IConfigurationComponent
     {

@@ -4,15 +4,15 @@
     public class ConfigurationItemAttribute: Attribute
     {
         private readonly string _settingName;
-        private readonly Type _providerType;
+        private readonly ConfigurationProviderType _providerType;
 
-        public ConfigurationItemAttribute(string settingName, Type providerType) 
+        public ConfigurationItemAttribute(string settingName, ConfigurationProviderType providerType) 
         {
             _settingName = settingName;
             _providerType = providerType;
         }
 
         public string SettingName { get => _settingName; }
-        public Type ProviderType { get => _providerType; }
+        public ConfigurationProviderType ProviderType { get => _providerType; }
     }
 }
