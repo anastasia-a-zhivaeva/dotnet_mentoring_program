@@ -67,5 +67,16 @@ namespace DictionaryReplacer
 
             Assert.Equal("temporary here comes the name John Doe and number $number$", result);
         }
+
+        [Fact]
+        public void Replace_DoesNotReplaceStringIfExtraValueInDictionary()
+        {
+            string template = "$temp$ here comes the name $name$";
+            Dictionary<string, string> dictionary = new Dictionary<string, string>() { { "temp", "temporary" }, { "name", "John Doe" }, { "number", "1" } };
+
+            string result = DictionaryProcessor.Replace(template, dictionary);
+
+            Assert.Equal("temporary here comes the name John Doe", result);
+        }
     }
 }
