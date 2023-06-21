@@ -159,5 +159,24 @@ namespace Katas
 
             Assert.Equal(0, total, 2);
         }
+
+        [Fact]
+        public void CalculateCartTotal_MoreThanFiveDifferentHave25PercentDiscount()
+        {
+            var cartBooks = new List<Book>()
+            {
+                books[0],
+                books[1],
+                books[2],
+                books[3],
+                books[4],
+                new Book() { Name = "Harry Potter and the Half-Blood Prince", Order = 6, Price = 8 },
+            };
+            var cart = new Cart(cartBooks);
+
+            double total = cart.CalculateTotal();
+
+            Assert.Equal(36, total, 2);
+        }
     }
 }
