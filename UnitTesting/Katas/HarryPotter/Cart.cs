@@ -2,16 +2,6 @@
 {
     internal class Cart
     {
-        private readonly Dictionary<int, double> _discounts = new Dictionary<int, double>()
-        {
-            { 0, 0 },
-            { 1, 0 },
-            { 2, 0.05 },
-            { 3, 0.1 },
-            { 4, 0.2 },
-            { 5, 0.25 },
-        };
-
         public Cart(List<Book> books)
         {
             Books = books;
@@ -78,9 +68,16 @@
 
         private double CalculateDiscount(int count)
         {
-            double discount;
-            _discounts.TryGetValue(count, out discount);
-            return discount;
+            switch (count)
+            {
+                case 0: return 0;
+                case 1: return 0;
+                case 2: return 0.05;
+                case 3: return 0.1;
+                case 4: return 0.2;
+                case 5: return 0.25;
+                default: return 0.25;
+            }
         }
     }
 }
