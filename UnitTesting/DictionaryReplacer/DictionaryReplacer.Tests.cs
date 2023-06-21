@@ -56,5 +56,16 @@ namespace DictionaryReplacer
 
             Assert.Equal("temporary here comes the name John Doe and number 1", result);
         }
+
+        [Fact]
+        public void Replace_DoesNotReplaceStringIfNoValueInDictionary()
+        {
+            string template = "$temp$ here comes the name $name$ and number $number$";
+            Dictionary<string, string> dictionary = new Dictionary<string, string>() { { "temp", "temporary" }, { "name", "John Doe" } };
+
+            string result = DictionaryProcessor.Replace(template, dictionary);
+
+            Assert.Equal("temporary here comes the name John Doe and number $number$", result);
+        }
     }
 }
