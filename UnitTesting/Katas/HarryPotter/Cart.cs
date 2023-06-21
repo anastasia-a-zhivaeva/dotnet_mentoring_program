@@ -8,6 +8,16 @@
 
         public List<Book> Books { get; set; }
 
-        internal static double Calculate(Cart cart) => throw new NotImplementedException();
+        internal static double Calculate(Cart cart)
+        {
+            double total = 0;
+
+            foreach (Book book in cart.Books)
+            {
+                total += book.Price;
+            }
+
+            return total;
+        }
     }
 }
