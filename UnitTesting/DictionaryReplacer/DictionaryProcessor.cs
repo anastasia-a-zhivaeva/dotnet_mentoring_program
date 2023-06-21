@@ -14,8 +14,14 @@
                 throw new ArgumentNullException(nameof(dictionary));
             }
 
+            string result = template;
 
-            return "";
+            foreach (var replacement in dictionary)
+            {
+                result = result.Replace($"${replacement.Key}$", replacement.Value);
+            }
+
+            return result;
         }
     }
 }
