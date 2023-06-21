@@ -34,5 +34,16 @@ namespace DictionaryReplacer
 
             Assert.Equal("", result);
         }
+
+        [Fact]
+        public void Replace_ReturnsReplacedStringForOneValue()
+        {
+            string template = "$temp$";
+            Dictionary<string, string> dictionary = new Dictionary<string, string>() { { "temp", "temporary" } };
+
+            string result = DictionaryProcessor.Replace(template, dictionary);
+
+            Assert.Equal("temporary", result);
+        }
     }
 }
