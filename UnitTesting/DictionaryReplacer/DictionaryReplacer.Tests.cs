@@ -45,5 +45,16 @@ namespace DictionaryReplacer
 
             Assert.Equal("temporary", result);
         }
+
+        [Fact]
+        public void Replace_ReturnsReplacedStringForTwoAndMoreValues()
+        {
+            string template = "$temp$ here comes the name $name$ and number $number$";
+            Dictionary<string, string> dictionary = new Dictionary<string, string>() { { "temp", "temporary" }, { "name", "John Doe" }, { "number", "1" } };
+
+            string result = DictionaryProcessor.Replace(template, dictionary);
+
+            Assert.Equal("temporary here comes the name John Doe and number 1", result);
+        }
     }
 }
