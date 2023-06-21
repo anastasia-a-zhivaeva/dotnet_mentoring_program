@@ -9,6 +9,11 @@
                 return "";
             }
 
+            if (dictionary == null)
+            {
+                throw new ArgumentNullException(nameof(dictionary));
+            }
+
             return "";
         }
     }
