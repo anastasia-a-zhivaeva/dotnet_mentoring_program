@@ -21,6 +21,13 @@
 
         internal double CalculateTotal()
         {
+            Dictionary<int, CartBook> books = AggregateBooks();
+
+            return CalculateTotal(books);
+        }
+
+        private Dictionary<int, CartBook> AggregateBooks()
+        {
             Dictionary<int, CartBook> books = new Dictionary<int, CartBook>();
 
             foreach (Book book in Books)
@@ -36,7 +43,7 @@
                 }
             }
 
-            return CalculateTotal(books);
+            return books;
         }
 
         private double CalculateTotal(Dictionary<int, CartBook> books, double total = 0)
