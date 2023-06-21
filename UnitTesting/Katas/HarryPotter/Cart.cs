@@ -21,6 +21,11 @@
 
         internal double CalculateTotal()
         {
+            if (Books == null)
+            {
+                throw new ArgumentNullException(nameof(Books));
+            }
+
             Dictionary<int, CartBook> books = AggregateBooks();
 
             return CalculateTotal(books);
