@@ -137,5 +137,27 @@ namespace Katas
 
             Assert.Equal(51.6, total, 2);
         }
+
+
+        [Fact]
+        public void CalculateCartTotal_NullCartThrowsError()
+        {
+            List<Book> cartBooks = null;
+            var cart = new Cart(cartBooks);
+
+            Assert.Throws<ArgumentNullException>(() => cart.CalculateTotal());
+        }
+
+
+        [Fact]
+        public void CalculateCartTotal_EmptyCartReturnsZero()
+        {
+            var cartBooks = new List<Book>();
+            var cart = new Cart(cartBooks);
+
+            double total = cart.CalculateTotal();
+
+            Assert.Equal(0, total, 2);
+        }
     }
 }
