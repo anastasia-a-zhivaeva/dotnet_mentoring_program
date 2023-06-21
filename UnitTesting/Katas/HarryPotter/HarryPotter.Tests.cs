@@ -48,9 +48,9 @@ namespace Katas
 				}
 			};
 
-			double total = Cart.Calculate(cart);
+			double total = Cart.CalculateTotal(cart);
 
-			Assert.Equal(books[0].Price, total);
+			Assert.Equal(8, total);
 		}
 	}
 }

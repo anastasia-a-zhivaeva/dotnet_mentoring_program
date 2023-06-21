@@ -8,7 +8,7 @@
 
         public List<Book> Books { get; set; }
 
-        internal static double Calculate(Cart cart)
+        internal static double CalculateTotal(Cart cart)
         {
             double total = 0;
 
