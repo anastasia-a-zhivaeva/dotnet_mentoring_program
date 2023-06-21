@@ -12,5 +12,15 @@ namespace DictionaryReplacer
 
             Assert.Equal("", result);
         }
+        [Fact]
+        public void Replace_ThrowsErrorIfDictionaryIsNull()
+        {
+            string template = "";
+            Dictionary<string, string> dictionary = null;
+
+            string result = DictionaryProcessor.Replace(template, dictionary);
+
+            Assert.Equal("", result);
+        }
     }
 }
