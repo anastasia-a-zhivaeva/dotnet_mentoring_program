@@ -40,32 +40,28 @@ namespace Katas
 		[Fact]
 		public void CalculateCartTotal_OneBookDoesNotHaveDiscount()
 		{
-			var cart = new Cart()
+			var cartBooks = new List<Book>()
 			{
-				Books = new List<Book>()
-				{
-					books[0],
-				}
+				books[0],
 			};
+			var cart = new Cart(cartBooks);
 
-			double total = Cart.CalculateTotal(cart);
+			double total = cart.CalculateTotal();
 
 			Assert.Equal(8, total);
 		}
 
 		[Fact]
-		public void CalculateCartTotal_DifferentBooksHave5PercentDiscount()
+		public void CalculateCartTotal_TwoDifferentBooksHave5PercentDiscount()
 		{
-			var cart = new Cart()
+			var cartBooks = new List<Book>()
 			{
-				Books = new List<Book>()
-				{
-					books[0],
-					books[1]
-				}
+				books[0],
+				books[1],
 			};
+			var cart = new Cart(cartBooks);
 
-			double total = Cart.CalculateTotal(cart);
+			double total = cart.CalculateTotal();
 
 			Assert.Equal(15.2, total);
 		}

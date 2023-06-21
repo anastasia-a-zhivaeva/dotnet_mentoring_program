@@ -2,7 +2,7 @@
 {
     internal class Cart
     {
-        private static readonly Dictionary<int, double> _discounts = new Dictionary<int, double>()
+        private readonly Dictionary<int, double> _discounts = new Dictionary<int, double>()
         {
             { 0, 0 },
             { 1, 0 },
@@ -12,18 +12,19 @@
             { 5, 0.25 },
         };
 
-        public Cart()
+        public Cart(List<Book> books)
         {
+            Books = books;
         }
 
         public List<Book> Books { get; set; }
 
-        internal static double CalculateTotal(Cart cart)
+        internal double CalculateTotal()
         {
             double total = 0;
             Dictionary<int, (Book book, int quantity)> books = new Dictionary<int, (Book book, int quantity)>();
 
-            foreach (Book cartBook in cart.Books)
+            foreach (Book cartBook in Books)
             {
                 (Book book, int quantity) value;
                 if (books.TryGetValue(cartBook.Order, out value))
@@ -55,7 +56,7 @@
             return total;
         }
 
-        private static double CalculateDiscount(int count)
+        private double CalculateDiscount(int count)
         {
             double discount;
             _discounts.TryGetValue(count, out discount);
