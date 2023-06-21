@@ -48,7 +48,7 @@ namespace Katas
 
 			double total = cart.CalculateTotal();
 
-			Assert.Equal(8, total);
+			Assert.Equal(8, total, 2);
 		}
 
 		[Fact]
@@ -63,7 +63,7 @@ namespace Katas
 
 			double total = cart.CalculateTotal();
 
-			Assert.Equal(15.2, total);
+			Assert.Equal(15.2, total, 2);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace Katas
 
             double total = cart.CalculateTotal();
 
-            Assert.Equal(21.6, total);
+            Assert.Equal(21.6, total, 2);
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace Katas
 
             double total = cart.CalculateTotal();
 
-            Assert.Equal(25.6, total);
+            Assert.Equal(25.6, total, 2);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace Katas
 
             double total = cart.CalculateTotal();
 
-            Assert.Equal(30, total);
+            Assert.Equal(30, total, 2);
         }
 
         [Fact]
@@ -135,7 +135,7 @@ namespace Katas
 
             double total = cart.CalculateTotal();
 
-            Assert.Equal(51.60, total);
+            Assert.Equal(51.6, total, 2);
         }
     }
 }

@@ -21,39 +21,47 @@
 
         internal double CalculateTotal()
         {
-            double total = 0;
-            Dictionary<int, (Book book, int quantity)> books = new Dictionary<int, (Book book, int quantity)>();
+            Dictionary<int, CartBook> books = new Dictionary<int, CartBook>();
 
-            foreach (Book cartBook in Books)
+            foreach (Book book in Books)
             {
-                (Book book, int quantity) value;
-                if (books.TryGetValue(cartBook.Order, out value))
+                CartBook cartBook;
+                if (books.TryGetValue(book.Order, out cartBook))
                 {
-                    value.quantity += 1;
+                    cartBook.Quantity += 1;
                 }
                 else
                 {
-                    books.Add(cartBook.Order, (cartBook, 1));
+                    books.Add(book.Order, new CartBook(book, 1));
                 }
+            }
+
+            return CalculateTotal(books);
+        }
+
+        private double CalculateTotal(Dictionary<int, CartBook> books, double total = 0)
+        {
+            if (books.Count == 0)
+            {
+                return total;
             }
 
             double discount = CalculateDiscount(books.Count);
 
-            foreach (KeyValuePair<int, (Book book, int quantity)> pair in books)
+            foreach (KeyValuePair<int, CartBook> pair in books)
             {
-                var book = pair.Value.book;
-                var quantity = pair.Value.quantity;
+                var book = pair.Value;
 
-                total += discount  >  0 ? book.Price * (1 - discount) : book.Price;
+                total += discount > 0 ? book.Price * (1 - discount) : book.Price;
 
-                var quantityLeft = quantity - 1;
-                if (quantityLeft > 0)
+                book.Quantity -= 1;
+                if (book.Quantity == 0)
                 {
-                    total += book.Price * quantityLeft;
+                    books.Remove(pair.Key);
                 }
             }
 
-            return total;
+            return CalculateTotal(books, total);
         }
 
         private double CalculateDiscount(int count)
