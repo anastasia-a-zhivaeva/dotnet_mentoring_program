@@ -64,6 +64,22 @@ namespace Katas
 			double total = cart.CalculateTotal();
 
 			Assert.Equal(15.2, total);
-		}
-	}
+        }
+
+        [Fact]
+        public void CalculateCartTotal_ThreeDifferentBooksHave10PercentDiscount()
+        {
+            var cartBooks = new List<Book>()
+            {
+                books[0],
+                books[1],
+				books[2]
+            };
+            var cart = new Cart(cartBooks);
+
+            double total = cart.CalculateTotal();
+
+            Assert.Equal(21.6, total);
+        }
+    }
 }
