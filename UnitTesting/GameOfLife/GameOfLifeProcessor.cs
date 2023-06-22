@@ -24,10 +24,11 @@
             {
                 for (int y = 0; y < cellsGrid.GetLength(1); y++)
                 {
+                    
+                    var aliveNeighbours = CalculateAliveNeighbours(cellsGrid);
+
                     if (cellsGrid[x, y] == DeadCell)
                     {
-                        var aliveNeighbours = CalculateAliveNeighbours(cellsGrid);
-
                         if (aliveNeighbours > 3)
                         {
                             nextGen[x, y] = AliveCell;
@@ -39,8 +40,16 @@
                     }
                     else
                     {
-                        nextGen[x, y] = cellsGrid[x, y];
+                        if (aliveNeighbours < 2)
+                        {
+                            nextGen[x, y] = DeadCell;
+                        }
+                        else
+                        {
+                            nextGen[x, y] = cellsGrid[x, y];
+                        }
                     }
+                    
                 }
             }
 
