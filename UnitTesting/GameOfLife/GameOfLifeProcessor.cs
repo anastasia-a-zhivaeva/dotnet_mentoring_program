@@ -61,7 +61,7 @@
         {
             if (currentGenCell == DeadCell)
             {
-                if (aliveNeighbours > 3)
+                if (aliveNeighbours == 3)
                 {
                     return AliveCell;
                 }

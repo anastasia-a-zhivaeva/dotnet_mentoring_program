@@ -50,9 +50,9 @@ namespace GameOfLife
             var ac = GameOfLifeProcessor.AliveCell;
             var cellsGrid = new string[3, 3]
             {
-                { dc, ac, dc },
-                { ac, ac, ac },
-                { dc, ac, dc }
+                { dc, dc, dc },
+                { dc, ac, ac },
+                { ac, ac, ac }
             };
 
             string[,] result = GameOfLifeProcessor.CalculateNextGeneration(cellsGrid);
@@ -62,7 +62,7 @@ namespace GameOfLife
             {
                 for (int y = 0; y < cellsGrid.GetLength(1); y++)
                 {
-                    if ((x == 0 && y == 1) || (x == 1 && y == 0) || (x == 1 && y == 2) || (x == 2 && y == 1))
+                    if ((x == 1 && y == 0) || (x == 1 && y == 2) || (x == 2 && y == 0) || (x == 2 && y == 2))
                     {
                         Assert.Equal(ac, result[x, y]);
                     }
