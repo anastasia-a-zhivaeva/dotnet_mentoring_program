@@ -1,8 +1,8 @@
-﻿namespace Katas
+﻿namespace HarryPotter
 {
     internal class CartBook : Book
     {
-        public CartBook(Book book, int quantity) 
+        public CartBook(Book book, int quantity)
         {
             Name = book.Name;
             Order = book.Order;

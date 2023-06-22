@@ -1,4 +1,4 @@
-﻿namespace Katas
+﻿namespace HarryPotter
 {
     internal class Cart
     {
@@ -12,26 +12,22 @@
         internal double CalculateTotal()
         {
             if (Books == null)
-            {
                 throw new ArgumentNullException(nameof(Books));
-            }
 
-            Dictionary<int, CartBook> books = AggregateBooks();
+            var books = AggregateBooks();
 
             return CalculateTotal(books);
         }
 
         private Dictionary<int, CartBook> AggregateBooks()
         {
-            Dictionary<int, CartBook> books = new Dictionary<int, CartBook>();
+            var books = new Dictionary<int, CartBook>();
 
-            foreach (Book book in Books)
+            foreach (var book in Books)
             {
                 CartBook cartBook;
                 if (books.TryGetValue(book.Order, out cartBook))
-                {
                     cartBook.Quantity += 1;
-                }
                 else
                 {
                     books.Add(book.Order, new CartBook(book, 1));
@@ -44,13 +40,11 @@
         private double CalculateTotal(Dictionary<int, CartBook> books, double total = 0)
         {
             if (books.Count == 0)
-            {
                 return total;
-            }
 
-            double discount = CalculateDiscount(books.Count);
+            var discount = CalculateDiscount(books.Count);
 
-            foreach (KeyValuePair<int, CartBook> pair in books)
+            foreach (var pair in books)
             {
                 var book = pair.Value;
 
@@ -58,9 +52,7 @@
 
                 book.Quantity -= 1;
                 if (book.Quantity == 0)
-                {
                     books.Remove(pair.Key);
-                }
             }
 
             return CalculateTotal(books, total);

@@ -1,4 +1,4 @@
-﻿namespace Katas
+﻿namespace HarryPotter
 {
     internal class Book
     {
