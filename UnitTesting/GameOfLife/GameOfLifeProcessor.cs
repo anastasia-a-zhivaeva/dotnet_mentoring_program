@@ -27,29 +27,7 @@
                     
                     var aliveNeighbours = CalculateAliveNeighbours(cellsGrid);
 
-                    if (cellsGrid[x, y] == DeadCell)
-                    {
-                        if (aliveNeighbours > 3)
-                        {
-                            nextGen[x, y] = AliveCell;
-                        }
-                        else
-                        {
-                            nextGen[x, y] = DeadCell;
-                        }
-                    }
-                    else
-                    {
-                        if (aliveNeighbours < 2)
-                        {
-                            nextGen[x, y] = DeadCell;
-                        }
-                        else
-                        {
-                            nextGen[x, y] = cellsGrid[x, y];
-                        }
-                    }
-                    
+                    nextGen[x, y] = CalculateNextGenCell(aliveNeighbours, cellsGrid[x, y]);
                 }
             }
 
@@ -78,6 +56,32 @@
             }
 
             return aliveNeighbours;
+        }
+
+        private static string CalculateNextGenCell(int aliveNeighbours, string currentGenCell)
+        {
+            if (currentGenCell == DeadCell)
+            {
+                if (aliveNeighbours > 3)
+                {
+                    return AliveCell;
+                }
+                else
+                {
+                    return DeadCell;
+                }
+            }
+            else
+            {
+                if (aliveNeighbours < 2)
+                {
+                    return DeadCell;
+                }
+                else
+                {
+                    return currentGenCell;
+                }
+            }
         }
     }
 }
