@@ -24,8 +24,7 @@
             {
                 for (int y = 0; y < cellsGrid.GetLength(1); y++)
                 {
-                    
-                    var aliveNeighbours = CalculateAliveNeighbours(cellsGrid);
+                    var aliveNeighbours = CalculateAliveNeighbours(cellsGrid, x, y);
 
                     nextGen[x, y] = CalculateNextGenCell(aliveNeighbours, cellsGrid[x, y]);
                 }
@@ -34,7 +33,7 @@
             return nextGen;
         }
 
-        private static int CalculateAliveNeighbours(string [,] cellsGrid)
+        private static int CalculateAliveNeighbours(string [,] cellsGrid, int x, int y)
         {
             var aliveNeighbours = 0;
 
@@ -42,8 +41,8 @@
             {
                 try
                 {
-                    var firstIndex = _neighbours[z, 0];
-                    var secondIndex = _neighbours[z, 1];
+                    var firstIndex = _neighbours[z, 0] + x;
+                    var secondIndex = _neighbours[z, 1] + y;
                     if (cellsGrid[firstIndex, secondIndex] == AliveCell)
                     {
                         aliveNeighbours++;
@@ -73,13 +72,13 @@
             }
             else
             {
-                if (aliveNeighbours < 2)
+                if (aliveNeighbours < 2 || aliveNeighbours > 3)
                 {
                     return DeadCell;
                 }
                 else
                 {
-                    return currentGenCell;
+                    return AliveCell;
                 }
             }
         }
