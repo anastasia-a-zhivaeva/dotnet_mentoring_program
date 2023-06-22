@@ -2,7 +2,7 @@
 {
     internal static class GameOfLifeProcessor
     {
-        private static readonly int[,] _neighbours = new int[8, 2]
+        private static readonly int[,] _neighbourShifts = new int[8, 2]
         {
             { 0, 1 },
             { 1, 0 },
@@ -19,7 +19,7 @@
 
         internal static string[,] CalculateNextGeneration(string[,] cellsGrid)
         {
-            var nextGen = (string[,])cellsGrid.Clone();
+            var nextGen = new string [cellsGrid.GetLength(0), cellsGrid.GetLength(1)];
             for (int x = 0; x < cellsGrid.GetLength(0); x++)
             {
                 for (int y = 0; y < cellsGrid.GetLength(1); y++)
@@ -37,12 +37,12 @@
         {
             var aliveNeighbours = 0;
 
-            for (int z = 0; z < _neighbours.GetLength(0); z++)
+            for (int z = 0; z < _neighbourShifts.GetLength(0); z++)
             {
                 try
                 {
-                    var firstIndex = _neighbours[z, 0] + x;
-                    var secondIndex = _neighbours[z, 1] + y;
+                    var firstIndex = _neighbourShifts[z, 0] + x;
+                    var secondIndex = _neighbourShifts[z, 1] + y;
                     if (cellsGrid[firstIndex, secondIndex] == AliveCell)
                     {
                         aliveNeighbours++;
