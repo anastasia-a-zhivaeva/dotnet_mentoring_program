@@ -61,6 +61,7 @@
     <Folder Include="Scripts" />
     <Folder Include="Views" />
     <Folder Include="Stored Procedures" />
+    <Folder Include="Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Person.sql" />
@@ -70,6 +71,7 @@
     <None Include="Scripts\Script.PostDeployOnce.sql" />
     <Build Include="Views\EmployeeInfo.sql" />
     <Build Include="Stored Procedures\AddEmployeeInfo.sql" />
+    <Build Include="Triggers\AddCompanyAndAddressOnInsert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Profile\SQLDB.publish.xml" />
