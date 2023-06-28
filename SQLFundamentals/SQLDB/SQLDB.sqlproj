@@ -60,6 +60,7 @@
     <Folder Include="Profile\" />
     <Folder Include="Scripts" />
     <Folder Include="Views" />
+    <Folder Include="Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Person.sql" />
@@ -68,6 +69,7 @@
     <Build Include="Tables\Company.sql" />
     <None Include="Scripts\Script.PostDeployOnce.sql" />
     <Build Include="Views\EmployeeInfo.sql" />
+    <Build Include="Stored Procedures\AddEmployeeInfo.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Profile\SQLDB.publish.xml" />
