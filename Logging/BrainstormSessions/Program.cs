@@ -1,8 +1,11 @@
 using System;
+using System.Net;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Formatting.Json;
+using Serilog.Sinks.Email;
 
 namespace BrainstormSessions
 {
@@ -10,11 +13,26 @@ namespace BrainstormSessions
     {
         public static void Main(string[] args)
         {
+            var loggerConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("Logger");
+
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
+                .MinimumLevel.Debug()
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.File(new JsonFormatter(), "C:/Temp/Log/BrainstormSessions", shared: true)
+                .WriteTo.File(new JsonFormatter(), loggerConfig["LogFilePath"], shared: true)
+                .WriteTo.Email(
+                    new EmailConnectionInfo {
+                        FromEmail = loggerConfig["FromEmail"],
+                        ToEmail = loggerConfig["ToEmail"],
+                        MailServer = "smtp.gmail.com",
+                        NetworkCredentials = new NetworkCredential(loggerConfig["Login"], loggerConfig["Password"]),
+                        EnableSsl = true,
+                        Port = 465,
+                        EmailSubject = loggerConfig["EmailSubject"]
+                    },
+                    restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information, // Usually, minimum level is Error
+                    batchPostingLimit: loggerConfig.GetValue<int>("BatchPostingLimit"),
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm} [{Level}] {Message}{NewLine}{Exception}")
                 .CreateLogger();
 
             try
