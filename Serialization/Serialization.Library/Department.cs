@@ -1,11 +1,14 @@
-﻿using System.Text;
+﻿using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
+
+#pragma warning disable SYSLIB0011
 
 namespace Serialization.Library
 {
     [Serializable]
-    public class Department
+    public class Department: ICloneable
     {
         [XmlElement("name")]
         public string DepartmentName { get; set; }
@@ -33,6 +36,17 @@ namespace Serialization.Library
                 department.AppendLine(employee.ToString());
             }
             return department.ToString();
+        }
+
+        public object Clone()
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, this);
+                stream.Position = 0;
+                return (Department)formatter.Deserialize(stream);
+            }
         }
     }
 }
