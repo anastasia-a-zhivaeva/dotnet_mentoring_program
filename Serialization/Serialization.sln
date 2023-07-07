@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Binary", "Binary\Binary.csproj", "{678554CC-FB42-44DF-9167-3DDFD9CCC0F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binary", "Binary\Binary.csproj", "{678554CC-FB42-44DF-9167-3DDFD9CCC0F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XML", "XML\XML.csproj", "{6E9082C1-E2FB-4B92-92A2-F8D11FA44EE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XML", "XML\XML.csproj", "{6E9082C1-E2FB-4B92-92A2-F8D11FA44EE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSON", "JSON\JSON.csproj", "{3D5C7C74-6A64-42A8-946C-9F4D9DD9E76D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JSON", "JSON\JSON.csproj", "{3D5C7C74-6A64-42A8-946C-9F4D9DD9E76D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Library", "Serialization.Library\Serialization.Library.csproj", "{249D0FC2-C324-494F-B72D-DC14F845DFEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization.Library", "Serialization.Library\Serialization.Library.csproj", "{249D0FC2-C324-494F-B72D-DC14F845DFEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISerializableImpl", "ISerializableImpl\ISerializableImpl.csproj", "{7CF38302-0EF7-49ED-AABC-9B9397319FE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{249D0FC2-C324-494F-B72D-DC14F845DFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{249D0FC2-C324-494F-B72D-DC14F845DFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{249D0FC2-C324-494F-B72D-DC14F845DFEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF38302-0EF7-49ED-AABC-9B9397319FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF38302-0EF7-49ED-AABC-9B9397319FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF38302-0EF7-49ED-AABC-9B9397319FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF38302-0EF7-49ED-AABC-9B9397319FE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
