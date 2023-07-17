@@ -1,4 +1,5 @@
 using DocumentCabinetLibrary;
+using Microsoft.Extensions.Logging;
 
 namespace DocumentCabinetTests
 {
@@ -6,6 +7,8 @@ namespace DocumentCabinetTests
     {
         private DocumentCabinet _documentCabinet;
         private IStorage<string, Document> _storage;
+        private ICache<string, Document> _cache;
+        private ILoggerFactory _loggerFactory;
         private List<Document> _documents = new List<Document>()
         {
             new Book()
@@ -51,7 +54,9 @@ namespace DocumentCabinetTests
 
         public DocumentCabinetTests() 
         {
-            _storage = new FileStorage();
+            _cache = new DocumentCache();
+            _loggerFactory = new LoggerFactory();
+            _storage = new FileDocumentStorage(_cache, _loggerFactory);
             _documentCabinet = new DocumentCabinet(_storage);
         }
         public void Dispose()

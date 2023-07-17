@@ -1,4 +1,5 @@
 ﻿using DocumentCabinetLibrary;
+using Microsoft.Extensions.Logging;
 
 internal class Program
 {
@@ -43,8 +44,14 @@ internal class Program
 
     private static DocumentCabinet InitializeDocumentCabinet()
     {
-
-        var storage = new FileStorage();
+        var cache = new DocumentCache();
+        var loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder.AddFilter("Microsoft", LogLevel.Warning)
+                   .AddFilter("System", LogLevel.Warning)
+                   .AddConsole();
+        });
+        var storage = new FileDocumentStorage(cache, loggerFactory);
         var documentCabinet = new DocumentCabinet(storage);
 
         List<Document> documents = new List<Document>()
@@ -99,6 +106,14 @@ internal class Program
                 ExpirationDate = new DateTime().AddDays(240),
                 ID = "some_unique_id2"
             },
+            new Magazine()
+            {
+                Number = "AS-001",
+                Title = "Astronomy Test Magazine",
+                DatePublished = new DateTime(),
+                Publisher = "Test Publisher",
+                ReleaseNumber = 1,
+            }
         };
 
         foreach (Document document in documents)

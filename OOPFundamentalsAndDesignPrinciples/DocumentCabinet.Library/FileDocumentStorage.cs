@@ -1,17 +1,21 @@
 ﻿using System.Text;
 using System.Text.Json;
-using System.Xml.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace DocumentCabinetLibrary
 {
-    public class FileStorage: IStorage<string, Document>
+    public class FileDocumentStorage: IStorage<string, Document>
     {
         private readonly string _path = new StringBuilder(Directory.GetCurrentDirectory()).Append(@"\DocumentCabinet").ToString();
+        private ICache<string,Document> _cache;
+        private ILogger<FileDocumentStorage> _logger;
         private DirectoryInfo _directory;
 
-        public FileStorage()
+        public FileDocumentStorage(ICache<string, Document> cache, ILoggerFactory loggerFactory)
         {
-            CreateDirectory();
+            _cache = cache;
+            _logger = loggerFactory.CreateLogger<FileDocumentStorage>();
+            _directory = Directory.CreateDirectory(_path);
         }
 
         public void Add(Document value)
@@ -19,7 +23,7 @@ namespace DocumentCabinetLibrary
             var filePath = Path.Combine(_path, $"{value.GetType().Name}_{value.Number}.json");
             using (var writer = File.Create(filePath))
             {
-                var type = value.GetType();
+                _logger.LogInformation($"Adding {value.Number} to storage, no caching");
                 JsonSerializer.Serialize(writer, value);
                 writer.Dispose();
             }
@@ -34,7 +38,13 @@ namespace DocumentCabinetLibrary
                 {
                     using (var reader = File.OpenRead(item.FullName))
                     {
-                        Document document = JsonSerializer.Deserialize<Document>(reader);
+                        Document document = _cache.Get(foundKey);
+                        if (document == null)
+                        {
+                            _logger.LogInformation($"Not a cache hit for {foundKey}");
+                            document = JsonSerializer.Deserialize<Document>(reader);
+                            _cache.Set(foundKey, document);
+                        }
                         reader.Dispose();
                         return document;
                     }
@@ -50,7 +60,14 @@ namespace DocumentCabinetLibrary
             {
                 using (var reader = File.OpenRead(item.FullName))
                 {
-                    Document document = JsonSerializer.Deserialize<Document>(reader);
+                    var key = ExtractKey(item.Name);
+                    Document document = _cache.Get(key);
+                    if (document == null)
+                    {
+                        _logger.LogInformation($"Not a cache hit for {key}");
+                        document = JsonSerializer.Deserialize<Document>(reader);
+                        _cache.Set(key, document);
+                    }
                     reader.Dispose();
                     yield return document;
                 }
@@ -66,7 +83,13 @@ namespace DocumentCabinetLibrary
                 {
                     using (var reader = File.OpenRead(item.FullName))
                     {
-                        Document document = JsonSerializer.Deserialize<Document>(reader);
+                        Document document = _cache.Get(foundKey);
+                        if (document == null)
+                        {
+                            _logger.LogInformation($"Not a cache hit for {foundKey}");
+                            document = JsonSerializer.Deserialize<Document>(reader);
+                            _cache.Set(foundKey, document);
+                        }
                         reader.Dispose();
                         yield return document;
                     }
@@ -82,6 +105,7 @@ namespace DocumentCabinetLibrary
                 if (foundKey == key)
                 {
                     item.Delete();
+                    _cache.Remove(foundKey);
                     return;
                 }
             }
@@ -93,13 +117,10 @@ namespace DocumentCabinetLibrary
         {
             foreach(var item in _directory.EnumerateFiles())
             {
+                var key = ExtractKey(item.Name);
                 item.Delete();
+                _cache.Remove(key);
             }
-        }
-
-        private void CreateDirectory()
-        {
-            _directory = Directory.CreateDirectory(_path);
         }
 
         private string ExtractKey(string name)
