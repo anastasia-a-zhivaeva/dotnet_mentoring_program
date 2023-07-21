@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.Loader;
-using System.Text;
 using ConfigurationProviderBaseLibrary;
 
 namespace ConfigurationAttribute
@@ -10,7 +9,7 @@ namespace ConfigurationAttribute
         public static Dictionary<ConfigurationProviderType, IConfigurationProvider> providers { get; private set; } = new Dictionary<ConfigurationProviderType, IConfigurationProvider>();
         public static readonly string ProvidersDirectory = "Providers";
 
-        private readonly static string _providersPath = new StringBuilder(Directory.GetCurrentDirectory()).Append(ProvidersDirectory).ToString();
+        private readonly static string _providersPath = Path.Combine(Directory.GetCurrentDirectory(), ProvidersDirectory).ToString();
 
         static ConfigurationProviderLoader()
         {
