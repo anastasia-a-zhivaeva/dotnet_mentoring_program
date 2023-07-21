@@ -21,3 +21,7 @@
 
 # log file
 *.logx
+
+# others
+*.dbmdl
+*.jfm
