@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersLibrary.Tests", "Orde
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Library", "Orders.Library\Orders.Library.csproj", "{4BE2D0F8-AF47-406F-B344-9F7C39D63524}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OrdersDB", "OrdersDB\OrdersDB.sqlproj", "{1928B3CA-FF10-412A-8493-284D92D9BEDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{4BE2D0F8-AF47-406F-B344-9F7C39D63524}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BE2D0F8-AF47-406F-B344-9F7C39D63524}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BE2D0F8-AF47-406F-B344-9F7C39D63524}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1928B3CA-FF10-412A-8493-284D92D9BEDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1928B3CA-FF10-412A-8493-284D92D9BEDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1928B3CA-FF10-412A-8493-284D92D9BEDC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1928B3CA-FF10-412A-8493-284D92D9BEDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1928B3CA-FF10-412A-8493-284D92D9BEDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1928B3CA-FF10-412A-8493-284D92D9BEDC}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
