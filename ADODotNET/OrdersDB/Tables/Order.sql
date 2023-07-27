@@ -5,5 +5,5 @@
     [CreatedDate] DATETIME NOT NULL, 
     [UpdatedDate] DATETIME NOT NULL, 
     [ProductId] INT NOT NULL, 
-    CONSTRAINT [FK_Order_ToProduct] FOREIGN KEY ([ProductId]) REFERENCES [Product]([Id])
+    CONSTRAINT [FK_Order_ToProduct] FOREIGN KEY ([ProductId]) REFERENCES [Product]([Id]) ON DELETE CASCADE
 )
