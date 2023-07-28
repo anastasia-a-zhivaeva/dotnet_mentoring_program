@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 using Orders.Library;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace OrdersLibrary.Tests
 {
     public class ProductsTests: IDisposable

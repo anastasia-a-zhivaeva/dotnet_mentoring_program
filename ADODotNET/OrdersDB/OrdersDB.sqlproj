@@ -63,6 +63,7 @@
   <ItemGroup>
     <Build Include="Tables\Order.sql" />
     <Build Include="Tables\Product.sql" />
+    <Build Include="InsertOrder.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployOnce.sql" />
