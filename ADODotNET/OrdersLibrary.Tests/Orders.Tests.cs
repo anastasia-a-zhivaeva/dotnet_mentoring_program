@@ -8,21 +8,10 @@ namespace OrdersLibrary.Tests
         private readonly string _connectionString = "Data Source=EPUSPRIW009D;Initial Catalog=OrdersTestDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
         private Orders _orders;
         private Products _products;
-        private Product _product = new Product
-        {
-            Name = "iPhone 14",
-            Description = "A total powerhouse.",
-            Weight = 6.07,
-            Height = 5.78,
-            Width = 2.82,
-            Length = 0.31
-        };
-        private Order _order = new Order
-        {
-            Status = "NotStarted",
-            CreatedDate = DateTime.Now.AddDays(-1),
-            UpdatedDate = DateTime.Now,
-        };
+        private Product _product = TestData.product;
+        private List<Product> _productsList = TestData.products;
+        private Order _order = TestData.order;
+        private List<Order> _ordersList = TestData.orders;
 
         public OrdersTests()
         {
@@ -178,6 +167,101 @@ namespace OrdersLibrary.Tests
             Assert.Equal(orderToUpdate.CreatedDate, result.CreatedDate);
             Assert.Equal(orderToUpdate.UpdatedDate, result.UpdatedDate);
             Assert.Equal(orderToUpdate.ProductId, result.ProductId);
+        }
+
+        [Fact]
+        public void GetAll_ReturnsEmptyListIfNoOrdersWereAdded()
+        {
+            Assert.Empty(_orders.GetAll());
+        }
+
+        [Fact]
+        public void GetAll_ReturnsAllOrdersIfNoFiltersUsed()
+        {
+            AddOrders();
+
+            Assert.Equal(_ordersList.Count, _orders.GetAll().Count());
+        }
+
+        [Fact]
+        public void GetAll_ReturnsOrdersFilteredByStatus()
+        {
+            AddOrders();
+            var status = "Done";
+
+            var orders = _orders.GetAll(status: "Done");
+
+            Assert.Equal(1, orders.Count());
+            Assert.True(orders.All(order => order.Status == status));
+        }
+
+        [Fact]
+        public void GetAll_ReturnsOrdersFilteredByMonth()
+        {
+            AddOrders();
+            var month = DateTime.Now.AddMonths(-1).Month;
+
+            var orders = _orders.GetAll(month: month);
+
+            Assert.Equal(2, orders.Count());
+            Assert.True(orders.All(order => order.CreatedDate.Month == month));
+        }
+
+        [Fact]
+        public void GetAll_ReturnsOrdersFilteredByYear()
+        {
+            AddOrders();
+            var year = DateTime.Now.AddYears(-1).Year;
+
+            var orders = _orders.GetAll(year: year);
+
+            Assert.Equal(2, orders.Count());
+            Assert.True(orders.All(order => order.CreatedDate.Year == year));
+        }
+
+        [Fact]
+        public void GetAll_ReturnsOrdersFilteredByProduct()
+        {
+            var productId = AddOrders();
+
+            var orders = _orders.GetAll(productId: productId);
+
+            Assert.Equal(1, orders.Count());
+            Assert.True(orders.All(order => order.ProductId == productId));
+        }
+        [Fact]
+        public void GetAll_ReturnsOrdersFilteredByTwoOrMoreFilters()
+        {
+            AddOrders();
+            var year = DateTime.Now.AddYears(-1).Year;
+            var month = DateTime.Now.AddMonths(-1).Month;
+
+            var orders = _orders.GetAll(year: year, month: month);
+
+            Assert.Equal(1, orders.Count());
+            Assert.True(orders.All(order => order.CreatedDate.Year == year && order.CreatedDate.Month == month));
+        }
+
+        private int AddOrders()
+        {
+            int firstProductId = 0;
+            for (var i = 0; i < _productsList.Count; i++)
+            {
+                var productId = _products.Add(_productsList[i]);
+                var order = new Order()
+                {
+                    Status = _ordersList[i].Status,
+                    CreatedDate = _ordersList[i].CreatedDate,
+                    UpdatedDate = _ordersList[i].UpdatedDate,
+                    ProductId = productId,
+                };
+                _orders.Add(order);
+
+                if (firstProductId == 0)
+                    firstProductId = productId;
+            }
+
+            return firstProductId;
         }
     }
 }

@@ -8,54 +8,8 @@ namespace OrdersLibrary.Tests
     {
         private readonly string _connectionString = "Data Source=EPUSPRIW009D;Initial Catalog=OrdersTestDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
         private Products _products;
-        private Product _product = new Product
-        {
-            Name = "iPhone 14",
-            Description = "A total powerhouse.",
-            Weight = 6.07,
-            Height = 5.78,
-            Width = 2.82,
-            Length = 0.31
-        };
-        private List<Product> _productsList = new List<Product>()
-        {
-            new Product
-            {
-                Name = "iPhone 14",
-                Description = "A total powerhouse.",
-                Weight = 6.07,
-                Height = 5.78,
-                Width = 2.82,
-                Length = 0.31
-            },
-            new Product
-            {
-                Name = "iPhone 14 Pro",
-                Description = "The ultimate iPhone.",
-                Weight = 7.27,
-                Height = 5.81,
-                Width = 2.81,
-                Length = 0.31
-            },
-            new Product
-            {
-                Name = "iPhone 13",
-                Description = "As amazing as ever.",
-                Weight = 6.14,
-                Height = 5.78,
-                Width = 2.82,
-                Length = 0.3
-            },
-            new Product
-            {
-                Name = "iPhone SE",
-                Description = "Serious power. Serious value.",
-                Weight = 5.09,
-                Height = 5.45,
-                Width = 2.65,
-                Length = 0.29
-            },
-        };
+        private Product _product = TestData.product;
+        private List<Product> _productsList = TestData.products;
 
         public ProductsTests()
         {

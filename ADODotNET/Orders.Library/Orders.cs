@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections;
+using System.Data;
 using Microsoft.Data.SqlClient;
 
 namespace OrdersLibrary
@@ -83,11 +84,58 @@ namespace OrdersLibrary
             _sqlDataAdapter.Update(_dataSet, "Order");
         }
 
+        public IEnumerable<Order> GetAll(int month = 0, int year = 0, string status = null, int productId = 0)
+        {
+            if (month > 0)
+            {
+                _sqlDataAdapter.SelectCommand.Parameters.Add(
+                   new SqlParameter("@Month", SqlDbType.Int)).Value = month;
+            }
+            if (year > 0)
+            {
+                _sqlDataAdapter.SelectCommand.Parameters.Add(
+                   new SqlParameter("@Year", SqlDbType.Int)).Value = year;
+            }
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                _sqlDataAdapter.SelectCommand.Parameters.Add(
+                   new SqlParameter("@Status", SqlDbType.NVarChar, 50)).Value = status;
+            }
+            if (productId > 0)
+            {
+                _sqlDataAdapter.SelectCommand.Parameters.Add(
+                   new SqlParameter("@ProductId", SqlDbType.Int)).Value = productId;
+            }
+
+            var fetchDataSet = new DataSet();
+            try
+            {
+                _sqlDataAdapter.Fill(fetchDataSet, "Order");
+                _sqlDataAdapter.SelectCommand.Parameters.Clear();
+                foreach (DataRow orderRow in fetchDataSet.Tables["Order"].Rows)
+                {
+                    yield return new Order()
+                    {
+                        Id = (int)orderRow["Id"],
+                        Status = (string)orderRow["Status"],
+                        CreatedDate = (DateTime)orderRow["CreatedDate"],
+                        UpdatedDate = (DateTime)orderRow["UpdatedDate"],
+                        ProductId = (int)orderRow["ProductId"]
+                    };
+                }
+            }
+            finally
+            {
+                fetchDataSet.Dispose();
+            }
+        }
+
         private void FillOrderDataSet(SqlConnection connection)
         {
-            string commandString = "SELECT * FROM [dbo].[Order]";
-            SqlCommand command = new SqlCommand(commandString, connection);
-            _sqlDataAdapter = new SqlDataAdapter(command);
+            SqlCommand command = new SqlCommand("dbo.FetchOrders", connection);
+            command.CommandType = CommandType.StoredProcedure;
+            _sqlDataAdapter = new SqlDataAdapter();
+            _sqlDataAdapter.SelectCommand = command;
             _dataSet = new DataSet();
             _sqlDataAdapter.Fill(_dataSet, "Order");
         }
@@ -109,19 +157,17 @@ namespace OrdersLibrary
                new SqlParameter("@Status", SqlDbType.NVarChar, 50,
                "Status"));
             _sqlDataAdapter.InsertCommand.Parameters.Add(
-               new SqlParameter("@CreatedDate", SqlDbType.NVarChar, 50,
-               "CreatedDate"));
+               new SqlParameter("@CreatedDate", SqlDbType.DateTime, 0, "CreatedDate"));
             _sqlDataAdapter.InsertCommand.Parameters.Add(
-               new SqlParameter("@UpdatedDate", SqlDbType.NVarChar, 50,
-               "UpdatedDate"));
+               new SqlParameter("@UpdatedDate", SqlDbType.DateTime, 0, "UpdatedDate"));
             _sqlDataAdapter.InsertCommand.Parameters.Add(
-               new SqlParameter("@ProductId", SqlDbType.NVarChar, 50,
-               "ProductId"));
+               new SqlParameter("@ProductId", SqlDbType.Int, 0, "ProductId"));
 
             SqlParameter parameter =
                 _sqlDataAdapter.InsertCommand.Parameters.Add(
                 "@Identity", SqlDbType.Int, 0, "Id");
             parameter.Direction = ParameterDirection.Output;
         }
+
     }
 }
