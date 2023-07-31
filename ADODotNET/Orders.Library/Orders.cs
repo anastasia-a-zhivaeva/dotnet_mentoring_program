@@ -6,19 +6,20 @@ namespace OrdersLibrary
 {
     public class Orders
     {
-        private DataSet _dataSet;
+        private SqlConnection _connection;
         private SqlDataAdapter _sqlDataAdapter;
         private DataTable _dataTable;
 
         public Orders(string connectionString)
         {
-            var connection = new SqlConnection(connectionString);
-            FillOrderDataSet(connection);
+            _connection = new SqlConnection(connectionString);
+            FillOrderDataSet();
             SetUpPrimaryKey();
-            SetUpInsertOrderStoredProcedure(connection);
+            SetUpInsertOrderStoredProcedure();
         }
 
-        public int Add(Order order) {
+        public int Add(Order order)
+        {
             if (order == null)
                 throw new ArgumentNullException(nameof(order));
 
@@ -30,7 +31,7 @@ namespace OrdersLibrary
             _dataTable.Rows.Add(newRow);
 
             new SqlCommandBuilder(_sqlDataAdapter);
-            _sqlDataAdapter.Update(_dataSet, "Order");
+            _sqlDataAdapter.Update(_dataTable);
 
             return (int)newRow["Id"];
         }
@@ -61,7 +62,7 @@ namespace OrdersLibrary
 
             _dataTable.Rows.Remove(orderRow);
             new SqlCommandBuilder(_sqlDataAdapter);
-            _sqlDataAdapter.Update(_dataSet, "Order");
+            _sqlDataAdapter.Update(_dataTable);
         }
 
         public void Update(Order order)
@@ -79,9 +80,9 @@ namespace OrdersLibrary
             orderRow["UpdatedDate"] = order.UpdatedDate;
             orderRow["ProductId"] = order.ProductId;
 
-            _dataTable.AcceptChanges();
+            orderRow.AcceptChanges();
             new SqlCommandBuilder(_sqlDataAdapter);
-            _sqlDataAdapter.Update(_dataSet, "Order");
+            _sqlDataAdapter.Update(_dataTable);
         }
 
         public IEnumerable<Order> GetAll(int month = 0, int year = 0, string status = null, int productId = 0)
@@ -130,27 +131,63 @@ namespace OrdersLibrary
             }
         }
 
-        private void FillOrderDataSet(SqlConnection connection)
+        public void BulkDelete(int month = 0, int year = 0, string status = null, int productId = 0)
         {
-            SqlCommand command = new SqlCommand("dbo.FetchOrders", connection);
+            var command = new SqlCommand("dbo.BulkDeleteOrders", _connection);
+            command.CommandType = CommandType.StoredProcedure;
+            if (month > 0)
+            {
+                command.Parameters.Add(
+                   new SqlParameter("@Month", SqlDbType.Int)).Value = month;
+            }
+            if (year > 0)
+            {
+                command.Parameters.Add(
+                   new SqlParameter("@Year", SqlDbType.Int)).Value = year;
+            }
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                command.Parameters.Add(
+                   new SqlParameter("@Status", SqlDbType.NVarChar, 50)).Value = status;
+            }
+            if (productId > 0)
+            {
+                command.Parameters.Add(
+                   new SqlParameter("@ProductId", SqlDbType.Int)).Value = productId;
+            }
+
+            try
+            {
+                _connection.Open();
+                command.ExecuteNonQuery();
+                _sqlDataAdapter.Fill(_dataTable);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        private void FillOrderDataSet()
+        {
+            SqlCommand command = new SqlCommand("dbo.FetchOrders", _connection);
             command.CommandType = CommandType.StoredProcedure;
             _sqlDataAdapter = new SqlDataAdapter();
             _sqlDataAdapter.SelectCommand = command;
-            _dataSet = new DataSet();
-            _sqlDataAdapter.Fill(_dataSet, "Order");
+            _dataTable = new DataTable();
+            _sqlDataAdapter.Fill(_dataTable);
         }
 
         private void SetUpPrimaryKey()
         {
-            _dataTable = _dataSet.Tables["Order"];
             var primaryKey = _dataTable.Columns[0];
             primaryKey.AutoIncrement = true;
             _dataTable.PrimaryKey = new DataColumn[] { primaryKey };
         }
 
-        private void SetUpInsertOrderStoredProcedure(SqlConnection connection)
+        private void SetUpInsertOrderStoredProcedure()
         {
-            _sqlDataAdapter.InsertCommand = new SqlCommand("dbo.InsertOrder", connection);
+            _sqlDataAdapter.InsertCommand = new SqlCommand("dbo.InsertOrder", _connection);
             _sqlDataAdapter.InsertCommand.CommandType = CommandType.StoredProcedure;
 
             _sqlDataAdapter.InsertCommand.Parameters.Add(
@@ -168,6 +205,5 @@ namespace OrdersLibrary
                 "@Identity", SqlDbType.Int, 0, "Id");
             parameter.Direction = ParameterDirection.Output;
         }
-
     }
 }

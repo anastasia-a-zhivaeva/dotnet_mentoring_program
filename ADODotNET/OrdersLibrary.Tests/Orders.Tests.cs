@@ -263,5 +263,27 @@ namespace OrdersLibrary.Tests
 
             return firstProductId;
         }
+
+        [Fact]
+        public void BulkDelete_DoesNotThrowIfNoOrdersToDelete()
+        {
+            AddOrders();
+            var month = DateTime.Now.AddMonths(-2).Month;
+
+            _orders.BulkDelete(month: month);
+
+            Assert.Equal(_ordersList.Count, _orders.GetAll().Count());
+        }
+
+        [Fact]
+        public void BulkDelete_DeletesOrdersFilteredByStatus()
+        {
+            AddOrders();
+            var status = "Done";
+
+            _orders.BulkDelete(status: status);
+
+            Assert.Equal(_ordersList.Count - 1, _orders.GetAll().Count());
+        }
     }
 }

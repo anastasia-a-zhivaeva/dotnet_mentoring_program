@@ -66,6 +66,7 @@
     <Build Include="Tables\Product.sql" />
     <Build Include="StoredProcedures\InsertOrder.sql" />
     <Build Include="StoredProcedures\FetchOrders.sql" />
+    <Build Include="StoredProcedures\BulkDeleteOrders.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployOnce.sql" />
