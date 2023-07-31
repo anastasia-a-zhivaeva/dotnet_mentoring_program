@@ -17,6 +17,45 @@ namespace OrdersLibrary.Tests
             Width = 2.82,
             Length = 0.31
         };
+        private List<Product> _productsList = new List<Product>()
+        {
+            new Product
+            {
+                Name = "iPhone 14",
+                Description = "A total powerhouse.",
+                Weight = 6.07,
+                Height = 5.78,
+                Width = 2.82,
+                Length = 0.31
+            },
+            new Product
+            {
+                Name = "iPhone 14 Pro",
+                Description = "The ultimate iPhone.",
+                Weight = 7.27,
+                Height = 5.81,
+                Width = 2.81,
+                Length = 0.31
+            },
+            new Product
+            {
+                Name = "iPhone 13",
+                Description = "As amazing as ever.",
+                Weight = 6.14,
+                Height = 5.78,
+                Width = 2.82,
+                Length = 0.3
+            },
+            new Product
+            {
+                Name = "iPhone SE",
+                Description = "Serious power. Serious value.",
+                Weight = 5.09,
+                Height = 5.45,
+                Width = 2.65,
+                Length = 0.29
+            },
+        };
 
         public ProductsTests()
         {
@@ -144,6 +183,27 @@ namespace OrdersLibrary.Tests
             Assert.Equal(productToUpdate.Width, result.Width);
             Assert.Equal(productToUpdate.Height, result.Height);
             Assert.Equal(productToUpdate.Length, result.Length);
+        }
+
+
+        [Fact]
+        public void GetAll_ReturnsEmptyListIfNoProductsWereAdded()
+        {
+            Assert.Empty(_products.GetAll());
+        }
+
+
+        [Fact]
+        public void GetAll_ReturnsAddedProducts()
+        {
+            foreach (var product in _productsList)
+            {
+                _products.Add(product);
+            }
+
+            var result = _products.GetAll();
+
+            Assert.True(Enumerable.SequenceEqual(_productsList, result.OrderBy(p => p.Id)));
         }
 
     }

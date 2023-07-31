@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Collections;
+using Microsoft.Data.SqlClient;
 
 namespace Orders.Library
 {
@@ -116,6 +117,38 @@ namespace Orders.Library
                 {
                     throw new KeyNotFoundException();
                 }
+            }
+        }
+
+        public IEnumerable<Product> GetAll()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                string commandString = $"SELECT * FROM [dbo].[Product];";
+
+                SqlCommand command = new SqlCommand(commandString, connection);
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var product = new Product();
+                        product.Id = reader.GetInt32(0);
+                        product.Name = reader.GetString(1);
+                        product.Description = reader.GetString(2);
+                        product.Weight = reader.GetDouble(3);
+                        product.Height = reader.GetDouble(4);
+                        product.Width = reader.GetDouble(5);
+                        product.Length = reader.GetDouble(6);
+
+                        yield return product;
+                    }
+                }
+
+                reader.Close();
+                connection.Close();
             }
         }
     }
