@@ -10,7 +10,9 @@ BEGIN
 	SAVE TRANSACTION BulkDeleteSavePoint;
 
 	BEGIN TRY
+
 		DELETE from [dbo].[Order]
+		OUTPUT Deleted.*
 		WHERE 
 			(MONTH(CreatedDate) = @Month)
 		OR (YEAR(CreatedDate) = @Year)

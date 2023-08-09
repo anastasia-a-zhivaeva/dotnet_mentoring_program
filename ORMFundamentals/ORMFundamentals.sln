@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersDapper.Library", "Ord
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersDapperLibrary.Tests", "OrdersDapperLibrary.Tests\OrdersDapperLibrary.Tests.csproj", "{A80CE511-1704-4BDA-A5AD-858326A2D49B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersEFLibrary.Tests", "OrdersEFLibrary.Tests\OrdersEFLibrary.Tests.csproj", "{58DA3B99-8AB1-4945-ADB8-F9C31AAF71C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersEF.Library", "OrdersEF.Library\OrdersEF.Library.csproj", "{FF52FD9F-9695-40A0-8D8A-EF8B196D75E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{A80CE511-1704-4BDA-A5AD-858326A2D49B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A80CE511-1704-4BDA-A5AD-858326A2D49B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A80CE511-1704-4BDA-A5AD-858326A2D49B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58DA3B99-8AB1-4945-ADB8-F9C31AAF71C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58DA3B99-8AB1-4945-ADB8-F9C31AAF71C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58DA3B99-8AB1-4945-ADB8-F9C31AAF71C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58DA3B99-8AB1-4945-ADB8-F9C31AAF71C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF52FD9F-9695-40A0-8D8A-EF8B196D75E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF52FD9F-9695-40A0-8D8A-EF8B196D75E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF52FD9F-9695-40A0-8D8A-EF8B196D75E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF52FD9F-9695-40A0-8D8A-EF8B196D75E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
